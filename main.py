@@ -8,18 +8,33 @@ class Character:
         self.damage = damage
         self.evade_chance = evade_chance
 
-    def take_damage(self, name, damage_taken, evade=False):
-        print('You attacked the ' + name)
+    def took_damage(self):
+        pass
+
+    def successful_attack(self):
+        print('sriugdlzurhglziudhrg;dg')
+
+    def missed_attack(self):
+        pass
+
+    def dodged_attack(self):
+        return 'The ' + self.name + ' evaded the attack'
+
+    def died(self):
+        pass
+
+    def take_damage(self, attacking_character, evade=False):
         if random.random() < self.evade_chance and evade is True:
-            print(self.name + ' succesfully blocked')
+            self.dodged_attack()
         else:
-            self.health = self.health - damage_taken
-            print(self.name + ' took ' + str(damage_taken) + ' damage')
+            self.health = self.health - attacking_character.damage
+            self.took_damage()
+            print(self.name + ' took ' + str(attacking_character.damage) + ' damage')
             print(self.name + ' now has ' + str(self.health) + ' health')
 
 
 p1 = Player('You', 20, 5, 2 / 10)
-wolf = Character('Wolf', 20, 1, 2 / 10)
+wolf = Wolf('Wolf', 20, 1, 2 / 10)
 serpent = Character('Serpent', 50, 2, 1 / 10)
 dragon = Character('Dragon', 100, 5, 0)
 
@@ -47,11 +62,13 @@ print('''Chose an option:
 choice = input('Pick an option: ')
 
 if choice == '1':
-    print('You take a step back but suddenly the wolf lunges at you')
-    p1.take_damage(wolf.name, wolf.damage)
+    print('You take a step back')
+    p1.take_damage(wolf)
 if choice == '2':
-    print('You pull out your knife and attack the wolf')
-    wolf.take_damage(wolf.name, p1.damage, evade=True)
+    # print('You pull out your knife and attack the wolf') FIX THIS LATER
+    wolf.take_damage(p1, evade=True)
+
+
 
 while wolf.health > 0:
     print('''Chose an option:
@@ -60,13 +77,10 @@ while wolf.health > 0:
     choice = input('Pick an option: ')
     if choice == '1':
         print("You attempt to evade the wolf's attack")
-        p1.take_damage(wolf.name, wolf.damage, evade=True)
+        p1.take_damage(wolf, evade=True)
     if choice == '2':
-        print('You attack the wolf with your knife')
-        wolf.take_damage(wolf.name, p1.damage, evade=True)
-        p1.take_damage(wolf.name, wolf.damage)
+        wolf.take_damage(p1) # if dead shouldnt do next thing
+        p1.take_damage(wolf)
 print()
 print('You killed the wolf')
 del wolf
-
-
