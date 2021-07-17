@@ -31,6 +31,26 @@ class Character:
             self.took_damage()
             print(self.name + ' took ' + str(attacking_character.damage) + ' damage')
             print(self.name + ' now has ' + str(self.health) + ' health')
+            # return false
+
+
+class Wolf(Character):
+
+    def successful_attack(self):
+        voicelines = ['The wolf lunges at you', 'The wolf swipes their paw across your face', 'The wolf bites you']
+        print(random.choice(voicelines))
+
+
+class Player(Character):
+
+    def take_damage(self, attacking_character, evade=False):
+        if random.random() < self.evade_chance and evade is True:
+            print('You succesfully blocked')
+        else:
+            self.health = self.health - attacking_character.damage
+            attacking_character.successful_attack()
+            print('You took ' + str(attacking_character.damage) + ' damage')
+            print('You now have ' + str(self.health) + ' health')
 
 
 p1 = Player('You', 20, 5, 2 / 10)
